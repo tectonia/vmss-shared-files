@@ -12,11 +12,10 @@ apt-get -y update
 
 # create the AzDevOps user
 useradd AzDevOps
-su - AzDevOps
 
 # install cifs-utils and mount file share
 apt-get install cifs-utils
-mkdir $4
+sudo -u AzDevOps mkdir $4
 mount -t cifs //$1.file.core.windows.net/$3 $4 -o vers=3.0,username=$1,password=$2,dir_mode=0755,file_mode=0664
 
 # create a symlink from /mountpath/xxx to ~username/xxx
