@@ -10,15 +10,10 @@
 # update package lists
 apt-get -y update
 
-# create the AzDevOps user
-useradd AzDevOps
-
 # install cifs-utils and mount file share
 apt-get install cifs-utils
 mkdir $4
-# change the ownership of the directory to the AzDevOps user
-chown -R AzDevOps:AzDevOps $4
-mount -t cifs //$1.file.core.windows.net/$3 $4 -o vers=3.0,username=$1,password=$2,dir_mode=0755,file_mode=0664
+mount -t cifs //$1.file.core.windows.net/$3 $4 -o vers=3.0,username=$1,password=$2,dir_mode=0777,file_mode=0666
 
 # create a symlink from /mountpath/xxx to ~username/xxx
 linkpoint=`echo $4 | sed 's/.*\///'`
@@ -26,11 +21,7 @@ eval ln -s $4 ~$5/$linkpoint
 
 # create marker files for testing
 {
-    echo "List of all users:"
-    cut -d: -f1 /etc/passwd
-    echo ""
     echo "Ownership of directories:"
-    cd /mnt
     ls -l $4
 } > $4/$HOSTNAME.txt
 
