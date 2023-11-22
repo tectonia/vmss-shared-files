@@ -1,5 +1,3 @@
-
-
 #!/bin/bash
 # $1 = Azure storage account name
 # $2 = Azure storage account key
@@ -23,7 +21,14 @@ linkpoint=`echo $4 | sed 's/.*\///'`
 eval ln -s $4 ~$5/$linkpoint
 
 # create marker files for testing
-ls -l $4 > $4/$HOSTNAME.txt
+{
+    echo "List of all users:"
+    cut -d: -f1 /etc/passwd
+    echo ""
+    echo "Ownership of directories:"
+    cd /mnt
+    ls -l $4
+} > $4/$HOSTNAME.txt
 
 
 
