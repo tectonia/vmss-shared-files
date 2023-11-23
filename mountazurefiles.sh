@@ -36,12 +36,7 @@ Invoke-WebRequest -Uri $installerUrl -OutFile $downloadPath
 $installParams = "--quiet --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --includeRecommended --wait"
 
 # Start the installation
-# run the installer and redirect the output to a temporary file
-$tempFile = New-TemporaryFile
-Start-Process -FilePath $downloadPath -ArgumentList $installParams -Wait -RedirectStandardOutput $tempFile
-
-# append the contents of the temporary file to the $4/$hostname.txt file
-Get-Content $tempFile | Out-File -Append -FilePath "$4/$HOSTNAME.txt"
+Start-Process -FilePath $downloadPath -ArgumentList $installParams -Wait
 
 # Optional: Add Visual Studio to the system PATH
 $vsPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE"
@@ -49,5 +44,3 @@ $vsPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7
 
 # Optional: Restart to apply changes
 Restart-Computer -Force
-
-
