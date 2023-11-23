@@ -25,5 +25,24 @@ eval ln -s $4 ~$5/$linkpoint
     ls -l $4
 } > $4/$HOSTNAME.txt
 
+# Variables
+$installerUrl = "https://aka.ms/vs/16/release/vs_community.exe"
+$downloadPath = "C:\Downloads\vs_installer.exe"
+
+# Download Visual Studio installer
+Invoke-WebRequest -Uri $installerUrl -OutFile $downloadPath
+
+# Silent installation parameters
+$installParams = "--quiet --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --includeRecommended --wait"
+
+# Start the installation
+Start-Process -FilePath $downloadPath -ArgumentList $installParams -Wait
+
+# Optional: Add Visual Studio to the system PATH
+$vsPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE"
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";$vsPath", [EnvironmentVariableTarget]::Machine)
+
+# Optional: Restart to apply changes
+Restart-Computer -Force
 
 
